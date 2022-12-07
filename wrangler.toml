@@ -1,0 +1,6 @@
+name = "cal"
+main = "src/index.ts"
+compatibility_date = "2022-12-07"
+kv_namespaces = [
+	{ binding = "storage", id = "d81e755792df4cb49f9bc455b63fe2e3", preview_id = "5e5df15b41be4076a3797d7262b28cd5" }
+]
