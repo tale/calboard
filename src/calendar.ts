@@ -1,9 +1,13 @@
-export async function buildCalendar(url: string) {
+export async function buildCalendar(url: string, bypasses: string[]) {
 	const rawData = await fetchCalendar(url)
 	const events = parseCalendarEvents(rawData)
 	const rawPayloads = new Array<string>()
 
 	for (const { time: rawTime, stamp, uid, summary } of events) {
+		if (bypasses.includes(summary)) {
+			continue
+		}
+
 		const [timeZone, timeStamp] = rawTime.split(':')
 		const [date, time] = timeStamp.split('T')
 		const regexTime = time.match(/.{1,2}/g)
