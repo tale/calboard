@@ -17,14 +17,16 @@ export async function buildCalendar(url: string, bypasses: string[]) {
 		}
 
 		let [hour, minute, second] = regexTime
+		let describe59 = false
 
 		// Round up the time by 1 minute
 		if (minute === '59') {
+			describe59 = true
 			minute = '00'
 			hour = String(Number(hour) + 1)
 		}
 
-		const reminderHour = String(Number(hour) - 1)
+		const reminderHour = String(Number(hour) - (describe59 ? 1 : 0))
 		const start = `DTSTART;${timeZone}:${date}T${reminderHour}${minute}${second}`
 		const end = `DTEND;${timeZone}:${date}T${hour}${minute}${second}`
 
@@ -33,6 +35,7 @@ export async function buildCalendar(url: string, bypasses: string[]) {
 			`DTSTAMP:${stamp}`,
 			`UID:${uid}`,
 			`SUMMARY:${summary}`,
+			`DESCRIPTION:${describe59 ? 'Set back by 1 hour' : 'No time changes made'}`,
 			start,
 			end,
 			'END:VEVENT'
